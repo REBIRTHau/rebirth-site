@@ -106,8 +106,7 @@ export function WorkSection({ title = "Work that makes the shift visible.", limi
       >
         {visible.map((project, index) => (
           <Reveal key={project.id} delay={index * 0.05}>
-            <div className={isSingleFeatured ? "flex w-full max-w-2xl flex-col items-center" : undefined}>
-            <HoverLift className={isSingleFeatured ? "w-full" : undefined}>
+            <HoverLift className={isSingleFeatured ? "w-full max-w-2xl" : undefined}>
               <article className="card-ambient group overflow-hidden p-0 transition duration-luxury hover:border-white/[0.08]">
                 <div className="relative overflow-hidden">
                   <SmartMedia
@@ -130,29 +129,29 @@ export function WorkSection({ title = "Work that makes the shift visible.", limi
                     {project.cardDescription}
                   </p>
                   <div className="mt-8">
-                    <Button
-                      type="button"
-                      secondary
-                      onClick={() => setSelected(project)}
-                      className="w-full sm:w-auto"
-                    >
-                      {project.ctaLabel ?? "WATCH FILM"}
-                    </Button>
+                    {project.youtubeUrl ? (
+                      <CinematicCtaLink
+                        href={project.youtubeUrl}
+                        secondary
+                        external
+                        className="w-full sm:w-auto"
+                      >
+                        {project.ctaLabel ?? "Watch Full Film"}
+                      </CinematicCtaLink>
+                    ) : (
+                      <Button
+                        type="button"
+                        secondary
+                        onClick={() => setSelected(project)}
+                        className="w-full sm:w-auto"
+                      >
+                        {project.ctaLabel ?? "WATCH FILM"}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </article>
             </HoverLift>
-            {project.youtubeUrl ? (
-              <div className="mt-10 flex w-full flex-col items-center px-2 text-center sm:mt-12">
-                <CinematicCtaLink href={project.youtubeUrl} secondary external>
-                  Watch Full Film
-                </CinematicCtaLink>
-                <p className="mt-4 max-w-sm text-sm leading-relaxed text-rebirth-muted">
-                  Experience the complete cinematic film on YouTube.
-                </p>
-              </div>
-            ) : null}
-            </div>
           </Reveal>
         ))}
       </div>

@@ -18,7 +18,7 @@ export const workItems = [
     services: ["Filming", "Video Editing", "Colour Grading", "Sound Design"],
     result:
       "A complete cinematic automotive film demonstrating REBIRTH's approach to visual storytelling, editing, and premium content creation.",
-    ctaLabel: "WATCH FILM",
+    ctaLabel: "WATCH FULL FILM",
     /** Paste your full YouTube film URL here (e.g. https://www.youtube.com/watch?v=...) */
     youtubeUrl: "https://youtu.be/b4bNh3MSr84",
   },
