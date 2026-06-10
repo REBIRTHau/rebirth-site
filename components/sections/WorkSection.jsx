@@ -8,6 +8,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Section } from "@/components/ui/Section";
 import { SmartMedia } from "@/components/ui/SmartMedia";
 import { Button } from "@/components/ui/Button";
+import { CinematicCtaLink } from "@/components/ui/CinematicCtaLink";
 import { HoverLift } from "@/components/ui/HoverLift";
 import { workCategories, workItems } from "@/data/work";
 import { EASE_OUT } from "@/lib/motion";
@@ -105,7 +106,8 @@ export function WorkSection({ title = "Work that makes the shift visible.", limi
       >
         {visible.map((project, index) => (
           <Reveal key={project.id} delay={index * 0.05}>
-            <HoverLift className={isSingleFeatured ? "w-full max-w-2xl" : undefined}>
+            <div className={isSingleFeatured ? "flex w-full max-w-2xl flex-col items-center" : undefined}>
+            <HoverLift className={isSingleFeatured ? "w-full" : undefined}>
               <article className="card-ambient group overflow-hidden p-0 transition duration-luxury hover:border-white/[0.08]">
                 <div className="relative overflow-hidden">
                   <SmartMedia
@@ -140,6 +142,17 @@ export function WorkSection({ title = "Work that makes the shift visible.", limi
                 </div>
               </article>
             </HoverLift>
+            {project.youtubeUrl ? (
+              <div className="mt-10 flex w-full flex-col items-center px-2 text-center sm:mt-12">
+                <CinematicCtaLink href={project.youtubeUrl} secondary external>
+                  Watch Full Film
+                </CinematicCtaLink>
+                <p className="mt-4 max-w-sm text-sm leading-relaxed text-rebirth-muted">
+                  Experience the complete cinematic film on YouTube.
+                </p>
+              </div>
+            ) : null}
+            </div>
           </Reveal>
         ))}
       </div>

@@ -15,7 +15,7 @@ const secondaryClass =
 /**
  * Valid anchor-based CTA (no button inside link) + subtle magnetic drift + premium hover.
  */
-export function CinematicCtaLink({ href, secondary, children, className }) {
+export function CinematicCtaLink({ href, secondary, children, className, external = false }) {
   const reduceMotion = useReducedMotion();
   const ref = useRef(null);
   const x = useMotionValue(0);
@@ -43,11 +43,20 @@ export function CinematicCtaLink({ href, secondary, children, className }) {
     y.set(0);
   }, [x, y]);
 
-  const inner = (
-    <Link
+  const linkClass = cn(secondary ? secondaryClass : primaryClass, "transition-colors duration-luxury");
+
+  const inner = external ? (
+    <a
       href={href}
-      className={cn(secondary ? secondaryClass : primaryClass, "transition-colors duration-luxury")}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={linkClass}
     >
+      <span className="relative">{children}</span>
+      <Icon className="relative h-4 w-4 opacity-70 transition duration-luxury group-hover:translate-x-0.5" />
+    </a>
+  ) : (
+    <Link href={href} className={linkClass}>
       <span className="relative">{children}</span>
       <Icon className="relative h-4 w-4 opacity-70 transition duration-luxury group-hover:translate-x-0.5" />
     </Link>
