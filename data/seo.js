@@ -1,13 +1,14 @@
+import { brand } from "./site";
+
 const baseUrl = "https://rebirthco.au";
 
 export const defaultSEO = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "REBIRTH | Discipline. Purpose. Power.",
+    default: brand.name,
     template: "%s | REBIRTH",
   },
-  description:
-    "REBIRTH builds cinematic storytelling, content systems, and identity-driven brand transformation for ambitious brands.",
+  description: brand.description,
   keywords: [
     "REBIRTH",
     "cinematic brand films",
@@ -17,8 +18,8 @@ export const defaultSEO = {
   ],
   authors: [{ name: "REBIRTH" }],
   openGraph: {
-    title: "REBIRTH",
-    description: "Premium transformation and cinematic content systems.",
+    title: brand.name,
+    description: brand.description,
     url: baseUrl,
     siteName: "REBIRTH",
     images: [
@@ -34,8 +35,8 @@ export const defaultSEO = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "REBIRTH",
-    description: "Discipline. Purpose. Power.",
+    title: brand.name,
+    description: brand.tagline,
     images: ["/rebirth/photos/hero-poster.jpg"],
   },
   icons: {
@@ -51,8 +52,16 @@ export const defaultSEO = {
 
 export const pageSEO = {
   home: {
-    title: "Cinematic Transformation",
-    description: "We build the visual systems behind transformation.",
+    title: { absolute: brand.name },
+    description: brand.description,
+    openGraph: {
+      title: brand.name,
+      description: brand.description,
+    },
+    twitter: {
+      title: brand.name,
+      description: brand.tagline,
+    },
   },
   about: {
     title: "About",
