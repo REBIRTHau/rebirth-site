@@ -13,6 +13,8 @@ import { HoverLift } from "@/components/ui/HoverLift";
 import { workCategories, workItems } from "@/data/work";
 import { EASE_OUT } from "@/lib/motion";
 
+const PORTFOLIO_THUMB_SIZES = "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 640px";
+
 export function WorkSection({ title = "Work that makes the shift visible.", limit, sectionId }) {
   const [active, setActive] = useState("All");
   const [selected, setSelected] = useState(null);
@@ -65,6 +67,8 @@ export function WorkSection({ title = "Work that makes the shift visible.", limi
                   <SmartMedia
                     src={project.image}
                     alt={project.title}
+                    sizes={PORTFOLIO_THUMB_SIZES}
+                    objectPosition={project.imagePosition}
                     className={`w-full transition duration-[800ms] ease-out group-hover:scale-[1.03] ${
                       isSingleFeatured ? "h-64 sm:h-80" : "h-56 sm:h-64"
                     }`}
@@ -135,7 +139,7 @@ export function WorkSection({ title = "Work that makes the shift visible.", limi
                   <Icon type="x" />
                 </button>
               </div>
-              <ProjectPreviewContent project={selected} />
+              <ProjectPreviewContent project={selected} eagerVideo />
             </motion.div>
           </motion.div>
         ) : null}

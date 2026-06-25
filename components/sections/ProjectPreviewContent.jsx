@@ -3,20 +3,49 @@
 import { useEffect, useRef, useState } from "react";
 import { CinematicCtaLink } from "@/components/ui/CinematicCtaLink";
 import { SmartMedia } from "@/components/ui/SmartMedia";
+import { cn } from "@/lib/cn";
 import { getProjectPreviewVideo, getProjectYouTubeUrl } from "@/lib/work";
 
-export function ProjectPreviewVideo({ src, poster }) {
+const previewFrameClass = "h-56 w-full sm:h-80";
+
+export function ProjectPreviewVideo({ src, poster, eager = false }) {
+  const containerRef = useRef(null);
   const videoRef = useRef(null);
+  const [shouldLoad, setShouldLoad] = useState(eager);
   const [muted, setMuted] = useState(true);
 
   useEffect(() => {
+    if (eager) {
+      setShouldLoad(true);
+      return;
+    }
+
+    const node = containerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "120px", threshold: 0.1 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [eager]);
+
+  useEffect(() => {
+    if (!shouldLoad) return;
     const video = videoRef.current;
     if (!video) return;
     video.muted = true;
     video.loop = true;
     video.play().catch(() => {});
     setMuted(true);
-  }, [src]);
+  }, [shouldLoad, src]);
 
   function toggleMute() {
     const video = videoRef.current;
@@ -28,40 +57,46 @@ export function ProjectPreviewVideo({ src, poster }) {
   }
 
   return (
-    <div className="relative bg-rebirth-void">
-      <video
-        ref={videoRef}
-        className="h-56 w-full object-cover sm:h-80"
-        src={src}
-        poster={poster}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-      />
-      <button
-        type="button"
-        onClick={toggleMute}
-        className="absolute bottom-4 right-4 rounded-sm border border-white/15 bg-rebirth-void/80 px-3 py-2 font-sans text-[9px] font-medium uppercase tracking-caps text-rebirth-white/85 backdrop-blur-sm transition hover:border-white/30"
-        aria-label={muted ? "Unmute video" : "Mute video"}
-      >
-        {muted ? "Unmute" : "Mute"}
-      </button>
+    <div ref={containerRef} className={cn("relative bg-rebirth-void", previewFrameClass)}>
+      {shouldLoad ? (
+        <video
+          ref={videoRef}
+          className={cn("object-cover", previewFrameClass)}
+          src={src}
+          poster={poster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="none"
+        />
+      ) : (
+        <SmartMedia src={poster} alt="" className={previewFrameClass} />
+      )}
+      {shouldLoad ? (
+        <button
+          type="button"
+          onClick={toggleMute}
+          className="absolute bottom-4 right-4 rounded-sm border border-white/15 bg-rebirth-void/80 px-3 py-2 font-sans text-[9px] font-medium uppercase tracking-caps text-rebirth-white/85 backdrop-blur-sm transition hover:border-white/30"
+          aria-label={muted ? "Unmute video" : "Mute video"}
+        >
+          {muted ? "Unmute" : "Mute"}
+        </button>
+      ) : null}
     </div>
   );
 }
 
-export function ProjectPreviewContent({ project }) {
+export function ProjectPreviewContent({ project, eagerVideo = false }) {
   const previewVideo = getProjectPreviewVideo(project);
   const youtubeUrl = getProjectYouTubeUrl(project);
 
   return (
     <>
       {previewVideo ? (
-        <ProjectPreviewVideo src={previewVideo} poster={project.image} />
+        <ProjectPreviewVideo src={previewVideo} poster={project.image} eager={eagerVideo} />
       ) : (
-        <SmartMedia src={project.image} alt={project.title} className="h-56 w-full sm:h-80" />
+        <SmartMedia src={project.image} alt={project.title} className={previewFrameClass} />
       )}
       <div className="grid gap-5 p-5 text-sm leading-relaxed text-white/60 sm:p-6">
         <p>{project.description}</p>

@@ -9,7 +9,14 @@ const fallbackClass =
 /**
  * Image with neutral fallback. Supports priority load for hero/LCP.
  */
-export function SmartMedia({ src, alt = "", className, priority = false, sizes }) {
+export function SmartMedia({
+  src,
+  alt = "",
+  className,
+  priority = false,
+  sizes,
+  objectPosition,
+}) {
   const [failed, setFailed] = useState(false);
 
   if (!src || failed) {
@@ -22,8 +29,10 @@ export function SmartMedia({ src, alt = "", className, priority = false, sizes }
       alt={alt}
       loading={priority ? "eager" : "lazy"}
       decoding="async"
+      fetchPriority={priority ? "high" : "low"}
       sizes={sizes}
       onError={() => setFailed(true)}
+      style={objectPosition ? { objectPosition } : undefined}
       className={cn("object-cover", className)}
     />
   );

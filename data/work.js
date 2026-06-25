@@ -18,6 +18,8 @@ export const workItems = [
     cardDescription:
       "A cinematic brand film capturing the people, place, and atmosphere behind the Full Throttle project.",
     image: assets.thumbnail("portfolio-full-throttle.png"),
+    /** Crop focus for the portfolio card — adjust % to frame the thumbnail */
+    imagePosition: "50% 18%",
     description:
       "A cinematic brand film capturing the people, place, and atmosphere behind the Full Throttle project. Rather than focusing only on the final work, this film tells the story of the people, the environment, and the moments that set the project in motion.",
     previewVideo: assets.project(fullThrottleSlug, "full-throttle01.mp4"),
