@@ -180,6 +180,17 @@
   animation: scroll-nudge-bar 2.8s ease-in-out infinite;
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .hero-video-ken-burns {
+    animation: none !important;
+    transform: scale(1.06);
+  }
+
+  .hero-video-layer {
+    will-change: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .grain,
   .scroll-cue-bar,

@@ -14,10 +14,12 @@ export function SmartMedia({
   alt = "",
   className,
   priority = false,
+  eager = false,
   sizes,
   objectPosition,
 }) {
   const [failed, setFailed] = useState(false);
+  const loadImmediately = priority || eager;
 
   if (!src || failed) {
     return <div className={cn(fallbackClass, className)} role="img" aria-label={alt || undefined} />;
@@ -27,9 +29,9 @@ export function SmartMedia({
     <img
       src={src}
       alt={alt}
-      loading={priority ? "eager" : "lazy"}
-      decoding="async"
-      fetchPriority={priority ? "high" : "low"}
+      loading={loadImmediately ? "eager" : "lazy"}
+      decoding={loadImmediately ? "sync" : "async"}
+      fetchPriority={loadImmediately ? "high" : "low"}
       sizes={sizes}
       onError={() => setFailed(true)}
       style={objectPosition ? { objectPosition } : undefined}

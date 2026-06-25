@@ -16,12 +16,12 @@ export const workItems = [
     title: "Full Throttle × Diamond Excavators",
     category: "Brand Film",
     cardDescription:
-      "A cinematic brand film capturing the people, place, and atmosphere behind the Full Throttle project.",
+      "A cinematic brand film showcasing the people, machinery, and craftsmanship behind Full Throttle.",
     image: assets.thumbnail("portfolio-full-throttle.png"),
     /** Crop focus for the portfolio card — adjust % to frame the thumbnail */
     imagePosition: "50% 18%",
     description:
-      "A cinematic brand film capturing the people, place, and atmosphere behind the Full Throttle project. Rather than focusing only on the final work, this film tells the story of the people, the environment, and the moments that set the project in motion.",
+      "Created to showcase more than the finished result, this film highlights the people, machinery, and craftsmanship that define Full Throttle. Every frame is designed to communicate professionalism, precision, and the atmosphere behind the brand.",
     previewVideo: assets.project(fullThrottleSlug, "full-throttle01.mp4"),
     /** Paste YouTube video ID only (e.g. b4bNh3MSr84 from https://youtu.be/b4bNh3MSr84) */
     youtubeVideoId: "2SJpmFbDnmE",

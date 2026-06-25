@@ -57,7 +57,6 @@ export function HeroSection() {
     layoutEffect: false,
   });
 
-  const videoY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [0, 20]);
   const contentY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [0, 12]);
 
   const reveal = Boolean(reduceMotion) || surfaceReady;
@@ -69,13 +68,10 @@ export function HeroSection() {
       className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-rebirth-void px-6 pb-28 pt-32 text-center sm:px-8 sm:pb-24 sm:pt-36"
       aria-label="REBIRTH hero"
     >
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <motion.div
-          className="hero-video-layer absolute inset-0 h-full w-full"
-          style={reduceMotion ? undefined : { y: videoY }}
-        >
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-rebirth-void">
+        <div className="hero-video-layer absolute inset-0 h-full w-full">
           <HeroBackgroundVideo />
-        </motion.div>
+        </div>
       </div>
 
       <div className="pointer-events-none absolute inset-0 z-[1] bg-rebirth-void/65" />

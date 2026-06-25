@@ -67,6 +67,7 @@ export function WorkSection({ title = "Work that makes the shift visible.", limi
                   <SmartMedia
                     src={project.image}
                     alt={project.title}
+                    priority
                     sizes={PORTFOLIO_THUMB_SIZES}
                     objectPosition={project.imagePosition}
                     className={`w-full transition duration-[800ms] ease-out group-hover:scale-[1.03] ${
