@@ -1,56 +1,12 @@
 "use client";
 
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { brand, brandPillars, ctaHref, ctaPrimary } from "@/data/site";
 import { useMotionSurfaceReady } from "@/components/MotionSurfaceContext";
 import { CinematicCtaLink } from "@/components/ui/CinematicCtaLink";
-import { assets } from "@/lib/assets";
+import { HeroBackgroundVideo } from "@/components/ui/HeroBackgroundVideo";
 import { EASE_LUXURY } from "@/lib/motion";
-
-function HeroBackgroundVideo() {
-  const videoRef = useRef(null);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const play = () => {
-      video.muted = true;
-      video.loop = true;
-      video.play().catch(() => {});
-    };
-
-    const onPlaying = () => setReady(true);
-
-    play();
-    video.addEventListener("loadeddata", play);
-    video.addEventListener("canplay", play);
-    video.addEventListener("playing", onPlaying);
-
-    return () => {
-      video.removeEventListener("loadeddata", play);
-      video.removeEventListener("canplay", play);
-      video.removeEventListener("playing", onPlaying);
-    };
-  }, []);
-
-  return (
-    <video
-      ref={videoRef}
-      className="hero-video-ken-burns h-full w-full object-cover"
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="auto"
-      poster={ready ? undefined : assets.hero.poster}
-    >
-      <source src={assets.hero.video} type="video/mp4" />
-    </video>
-  );
-}
 
 const fadeUp = (delay = 0) => ({
   hidden: { opacity: 0, y: 32 },
@@ -101,8 +57,7 @@ export function HeroSection() {
     layoutEffect: false,
   });
 
-  const videoScale = useTransform(scrollYProgress, [0, 1], reduceMotion ? [1.05, 1.05] : [1.05, 1.1]);
-  const videoY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [0, 32]);
+  const videoY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [0, 20]);
   const contentY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [0, 12]);
 
   const reveal = Boolean(reduceMotion) || surfaceReady;
@@ -114,12 +69,14 @@ export function HeroSection() {
       className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-rebirth-void px-6 pb-28 pt-32 text-center sm:px-8 sm:pb-24 sm:pt-36"
       aria-label="REBIRTH hero"
     >
-      <motion.div
-        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
-        style={{ y: videoY, scale: videoScale }}
-      >
-        <HeroBackgroundVideo />
-      </motion.div>
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <motion.div
+          className="hero-video-layer absolute inset-0 h-full w-full"
+          style={reduceMotion ? undefined : { y: videoY }}
+        >
+          <HeroBackgroundVideo />
+        </motion.div>
+      </div>
 
       <div className="pointer-events-none absolute inset-0 z-[1] bg-rebirth-void/65" />
       <div className="hero-vignette pointer-events-none absolute inset-0 z-[2]" />

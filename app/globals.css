@@ -133,7 +133,17 @@
   transform: scale(1.05);
   filter: contrast(1.05) saturate(0.72) brightness(0.88);
   animation: hero-video-ken-burns 24s ease-in-out infinite alternate;
+}
+
+.hero-video-layer {
+  transform: translateZ(0);
   will-change: transform;
+}
+
+.hero-video,
+.portfolio-preview-video {
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 @keyframes hero-video-ken-burns {
@@ -175,6 +185,9 @@
   .scroll-cue-bar,
   .hero-video-ken-burns {
     animation: none !important;
+  }
+  .hero-video-layer {
+    will-change: auto;
   }
   html {
     scroll-behavior: auto;

@@ -45,7 +45,7 @@ export function SiteHeader() {
           )}
         >
           <Link href="/" aria-label="REBIRTH home" className="shrink-0">
-            <Logo />
+            <Logo variant="icon" />
           </Link>
           <nav className="hidden items-center gap-8 lg:flex">
             {primaryNavigation.map((item) => {
@@ -87,7 +87,7 @@ export function SiteHeader() {
             transition={{ duration: 0.38, ease: menuEase }}
           >
             <div className="flex justify-between">
-              <Logo />
+              <Logo variant="icon" />
               <button type="button" onClick={() => setOpen(false)} aria-label="Close menu">
                 <Icon type="x" />
               </button>

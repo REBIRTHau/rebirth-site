@@ -1,41 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { CinematicCtaLink } from "@/components/ui/CinematicCtaLink";
 import { SmartMedia } from "@/components/ui/SmartMedia";
+import { useLazyVideo } from "@/lib/useLazyVideo";
 import { cn } from "@/lib/cn";
 import { getProjectPreviewVideo, getProjectYouTubeUrl } from "@/lib/work";
 
 const previewFrameClass = "h-56 w-full sm:h-80";
 
 export function ProjectPreviewVideo({ src, poster, eager = false }) {
-  const containerRef = useRef(null);
-  const videoRef = useRef(null);
-  const [shouldLoad, setShouldLoad] = useState(eager);
+  const { containerRef, videoRef, shouldLoad } = useLazyVideo({ eager });
   const [muted, setMuted] = useState(true);
-
-  useEffect(() => {
-    if (eager) {
-      setShouldLoad(true);
-      return;
-    }
-
-    const node = containerRef.current;
-    if (!node) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShouldLoad(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "120px", threshold: 0.1 }
-    );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [eager]);
 
   useEffect(() => {
     if (!shouldLoad) return;
@@ -45,7 +21,7 @@ export function ProjectPreviewVideo({ src, poster, eager = false }) {
     video.loop = true;
     video.play().catch(() => {});
     setMuted(true);
-  }, [shouldLoad, src]);
+  }, [shouldLoad, src, videoRef]);
 
   function toggleMute() {
     const video = videoRef.current;
@@ -58,10 +34,11 @@ export function ProjectPreviewVideo({ src, poster, eager = false }) {
 
   return (
     <div ref={containerRef} className={cn("relative bg-rebirth-void", previewFrameClass)}>
+      <SmartMedia src={poster} alt="" priority={eager} className={previewFrameClass} />
       {shouldLoad ? (
         <video
           ref={videoRef}
-          className={cn("object-cover", previewFrameClass)}
+          className={cn("portfolio-preview-video absolute inset-0 h-full w-full object-cover", previewFrameClass)}
           src={src}
           poster={poster}
           autoPlay
@@ -70,9 +47,7 @@ export function ProjectPreviewVideo({ src, poster, eager = false }) {
           playsInline
           preload="none"
         />
-      ) : (
-        <SmartMedia src={poster} alt="" className={previewFrameClass} />
-      )}
+      ) : null}
       {shouldLoad ? (
         <button
           type="button"
