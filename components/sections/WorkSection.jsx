@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
 import { Label } from "@/components/ui/Label";
@@ -8,57 +8,10 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Section } from "@/components/ui/Section";
 import { SmartMedia } from "@/components/ui/SmartMedia";
 import { Button } from "@/components/ui/Button";
-import { CinematicCtaLink } from "@/components/ui/CinematicCtaLink";
+import { ProjectPreviewContent } from "@/components/sections/ProjectPreviewContent";
 import { HoverLift } from "@/components/ui/HoverLift";
 import { workCategories, workItems } from "@/data/work";
 import { EASE_OUT } from "@/lib/motion";
-
-function ProjectModalVideo({ src, poster }) {
-  const videoRef = useRef(null);
-  const [muted, setMuted] = useState(true);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = true;
-    video.loop = true;
-    video.play().catch(() => {});
-    setMuted(true);
-  }, [src]);
-
-  function toggleMute() {
-    const video = videoRef.current;
-    if (!video) return;
-    const next = !video.muted;
-    video.muted = next;
-    setMuted(next);
-    if (!next) video.play().catch(() => {});
-  }
-
-  return (
-    <div className="relative bg-rebirth-void">
-      <video
-        ref={videoRef}
-        className="h-56 w-full object-cover sm:h-80"
-        src={src}
-        poster={poster}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-      />
-      <button
-        type="button"
-        onClick={toggleMute}
-        className="absolute bottom-4 right-4 rounded-sm border border-white/15 bg-rebirth-void/80 px-3 py-2 font-sans text-[9px] font-medium uppercase tracking-caps text-rebirth-white/85 backdrop-blur-sm transition hover:border-white/30"
-        aria-label={muted ? "Unmute video" : "Mute video"}
-      >
-        {muted ? "Unmute" : "Mute"}
-      </button>
-    </div>
-  );
-}
 
 export function WorkSection({ title = "Work that makes the shift visible.", limit, sectionId }) {
   const [active, setActive] = useState("All");
@@ -129,25 +82,14 @@ export function WorkSection({ title = "Work that makes the shift visible.", limi
                     {project.cardDescription}
                   </p>
                   <div className="mt-8">
-                    {project.youtubeUrl ? (
-                      <CinematicCtaLink
-                        href={project.youtubeUrl}
-                        secondary
-                        external
-                        className="w-full sm:w-auto"
-                      >
-                        {project.ctaLabel ?? "Watch Full Film"}
-                      </CinematicCtaLink>
-                    ) : (
-                      <Button
-                        type="button"
-                        secondary
-                        onClick={() => setSelected(project)}
-                        className="w-full sm:w-auto"
-                      >
-                        {project.ctaLabel ?? "WATCH FILM"}
-                      </Button>
-                    )}
+                    <Button
+                      type="button"
+                      secondary
+                      onClick={() => setSelected(project)}
+                      className="w-full sm:w-auto"
+                    >
+                      {project.ctaLabel ?? "VIEW PROJECT"}
+                    </Button>
                   </div>
                 </div>
               </article>
@@ -193,31 +135,7 @@ export function WorkSection({ title = "Work that makes the shift visible.", limi
                   <Icon type="x" />
                 </button>
               </div>
-              {selected.video ? (
-                <ProjectModalVideo src={selected.video} poster={selected.image} />
-              ) : (
-                <SmartMedia src={selected.image} alt={selected.title} className="h-56 w-full sm:h-64" />
-              )}
-              <div className="grid gap-5 p-5 text-sm leading-relaxed text-white/60 sm:p-6">
-                <p>{selected.description}</p>
-                {selected.services?.length ? (
-                  <div>
-                    <span className="label-caps text-rebirth-smoke">Services</span>
-                    <ul className="mt-3 space-y-2 text-rebirth-muted">
-                      {selected.services.map((service) => (
-                        <li key={service}>• {service}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-                {selected.result ? (
-                  <p>
-                    <span className="label-caps text-rebirth-smoke">Result</span>
-                    <br />
-                    <span className="mt-3 block text-rebirth-muted">{selected.result}</span>
-                  </p>
-                ) : null}
-              </div>
+              <ProjectPreviewContent project={selected} />
             </motion.div>
           </motion.div>
         ) : null}

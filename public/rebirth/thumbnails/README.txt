@@ -1,9 +1,9 @@
-Drop portfolio thumbnail images here.
+Portfolio card thumbnails — one image per project.
 
-Suggested files:
-- portfolio-1.jpg
-- portfolio-2.jpg
-- portfolio-3.jpg
-- on-set.jpg
+Full Throttle × Diamond Excavators:
+  portfolio-full-throttle.jpg
 
-Referenced from data/work.js via lib/assets.js
+VF Commodore Film:
+  portfolio-3.jpg
+
+Drop files here, then reference the filename in data/work.js.
